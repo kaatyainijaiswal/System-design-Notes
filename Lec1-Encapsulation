@@ -1,0 +1,133 @@
+/*
+Encapsulation says 2 things:
+1. An Object's Characteristics and its behaviour are encapsulated together
+within that Object.
+2. All the characteristics or behaviours are not for everyone to access.
+Object should provide data security.
+
+We follow above 2 pointers about Object of real world in programming by:
+1. Creating a class that act as a blueprint for Object creation. Class contain
+all the characteristics (class variable) and behaviour (class methods) in one block,
+encapsulating it together.
+2. We introduce access modifiers (public, private, protected, default) etc to provide data
+security to the class members.
+*/
+
+public interface Usable {
+    void startEngine();
+    void shiftGear();
+    void accelerate();
+    void brake();
+    void stopEngine();
+
+}
+
+public class Car implements Usable {
+    private String name;
+    private String model;
+    private int currentGear=0;
+    private boolean isBrakePressed=false;
+    private boolean isEngineOn=false;
+
+    private String tyreCompany;
+
+    public String getTyreComapany(){
+        return tyreCompany;
+    }
+
+    public void setTyreCompany(String tyreCompany){
+        this.tyreCompany=tyreCompany;
+    }
+
+
+
+    Car(String name,String model){
+        this.name=name;
+        this.model=model;
+    }
+
+    @Override
+    public void startEngine() {
+        if(!isEngineOn){
+            isEngineOn=true;
+            System.out.println(name+" "+model+" Car's Engine is turned on");
+        }
+        else{
+            System.out.println("Engine is already running");
+        }
+    }
+
+    @Override
+    public void shiftGear() {
+        if(isEngineOn){
+            currentGear=(currentGear+1)%7;
+            System.out.println("Car's current engine is shifted "+currentGear);
+
+        }
+        else {
+            System.out.println("Cant shift gear,Engine is off");
+        }
+
+    }
+
+    @Override
+    public void accelerate() {
+        if(isEngineOn && currentGear>0){
+            System.out.println("Car is already accelerating");
+        } else if (!isEngineOn ){
+            System.out.println("Engine is off cannot accelerate");
+
+        }
+        else{
+            System.out.println("Shift gear first");
+        }
+    }
+
+
+    @Override
+    public void brake() {
+        if (isEngineOn) {
+            isBrakePressed = true;
+            currentGear = 0;
+            System.out.println("Brake applied. Car stopped. Gear reset to 0.");
+            stopEngine(); // Optional: Stop engine after brake
+        } else {
+            System.out.println("Car is already off.");
+        }
+    }
+
+    @Override
+    public void stopEngine() {
+        if(isEngineOn){
+            isEngineOn=false;
+            System.out.println(name+" Car's Engine is brought to halt");
+        }
+    }
+    public int getCurrentGear(){
+        return currentGear;
+    }
+
+}
+// Main method
+public class Main {
+    public static void main(String[] args) {
+
+        Car car1=new Car("Mercedes","Benz");
+        car1.startEngine();
+        car1.shiftGear();
+        car1.accelerate();
+        car1.brake();
+        car1.stopEngine();
+        car1.accelerate();
+
+        Car car2=new Car("Audi","g10");
+        car2.setTyreCompany("Feat");
+        String asnTyre=car2.getTyreComapany();
+        System.out.println(asnTyre);
+        car2.startEngine();
+        car2.shiftGear();
+        car2.shiftGear();
+        int car2Gear=car2.getCurrentGear();
+        System.out.println("car2gear"+car2Gear);
+    }
+}
