@@ -1,0 +1,83 @@
+// Interface mein added some functions
+public interface Usable {
+    void startEngine();
+    void shiftGear();
+    void accelerate();
+    void brake();
+    void stopEngine();
+
+}
+
+//Car class implementing the interfaces
+public class Car implements Usable {
+    String name;
+    String model;
+    int gearRightNow=0;
+    boolean brakeIsPressed=false;
+    boolean isEngineOn=false;
+
+    Car(String name,String model){
+        this.name=name;
+        this.model=model;
+    }
+
+    @Override
+    public void startEngine() {
+        if(!isEngineOn){
+            isEngineOn=true;
+            System.out.println(name+" Car's Engine is turned on");
+        }
+    }
+
+    @Override
+    public void shiftGear() {
+        if(gearRightNow==0 && isEngineOn){
+            System.out.println("change gear ");
+            gearRightNow++;
+            if(gearRightNow==7 ) gearRightNow=0;
+        }
+
+    }
+
+    @Override
+    public void accelerate() {
+        if (isEngineOn) {
+            System.out.println("Please press the accelerator");
+        }
+        else startEngine();
+    }
+    @Override
+    public void brake() {
+          if(isEngineOn){
+              System.out.println("Please press the brake");
+              gearRightNow=0;
+              stopEngine();
+              brakeIsPressed=true;
+              System.out.println("brake was preseed");
+          }
+    }
+
+    @Override
+    public void stopEngine() {
+        if(isEngineOn){
+            isEngineOn=false;
+            System.out.println(name+" Car's Engine is brought to halt");
+        }
+    }
+
+
+}
+
+//Main method
+public class Main {
+    public static void main(String[] args) {
+
+        Car car1=new Car("Mercedes","Benz");
+        car1.startEngine();
+        car1.shiftGear();
+        car1.accelerate();
+        car1.brake();
+        car1.stopEngine();
+        car1.accelerate();
+    }
+}
