@@ -10,11 +10,11 @@ public interface Usable {
 
 //Car class implementing the interfaces
 public class Car implements Usable {
-    String name;
-    String model;
-    int gearRightNow=0;
-    boolean brakeIsPressed=false;
-    boolean isEngineOn=false;
+    private String name;
+    private String model;
+    private int currentGear=0;
+    private boolean isBrakePressed=false;
+    private boolean isEngineOn=false;
 
     Car(String name,String model){
         this.name=name;
@@ -25,36 +25,50 @@ public class Car implements Usable {
     public void startEngine() {
         if(!isEngineOn){
             isEngineOn=true;
-            System.out.println(name+" Car's Engine is turned on");
+            System.out.println(name+" "+model+" Car's Engine is turned on");
+        }
+        else{
+            System.out.println("Engine is already running");
         }
     }
 
     @Override
     public void shiftGear() {
-        if(gearRightNow==0 && isEngineOn){
-            System.out.println("change gear ");
-            gearRightNow++;
-            if(gearRightNow==7 ) gearRightNow=0;
+        if(isEngineOn){
+            currentGear=(currentGear+1)%7;
+            System.out.println("Car's current engine is shifted "+currentGear);
+
+        }
+        else {
+            System.out.println("Cant shift gear,Engine is off");
         }
 
     }
 
     @Override
     public void accelerate() {
-        if (isEngineOn) {
-            System.out.println("Please press the accelerator");
+        if(isEngineOn && currentGear>0){
+            System.out.println("Car is already accelerating");
+        } else if (!isEngineOn ){
+            System.out.println("Engine is off cannot accelerate");
+
         }
-        else startEngine();
+        else{
+            System.out.println("Shift gear first");
+        }
     }
+
+
     @Override
     public void brake() {
-          if(isEngineOn){
-              System.out.println("Please press the brake");
-              gearRightNow=0;
-              stopEngine();
-              brakeIsPressed=true;
-              System.out.println("brake was preseed");
-          }
+        if (isEngineOn) {
+            isBrakePressed = true;
+            currentGear = 0;
+            System.out.println("Brake applied. Car stopped. Gear reset to 0.");
+            stopEngine(); // Optional: Stop engine after brake
+        } else {
+            System.out.println("Car is already off.");
+        }
     }
 
     @Override
